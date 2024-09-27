@@ -45,7 +45,16 @@ STA $4B
 LDA $4E   ; "e"
 STA $4C
 STA $1    ; put it/she in between <i>
-STA $3
-STA $3
-
-
+STA $3    ; move up in DOM
+STA $3    ; move up in DOM
+LDA #0
+STA $46
+STA $0    ; create <p>
+LDA $32   ; load string from shared memory
+STA $1    ; put the string in <p>
+STA $3    ; move up in DOM
+LDA #0
+STA $46
+STA $0    ; create <p>
+LDA $33   ; load string from shared memory
+STA $1    ; put the string in <p>
