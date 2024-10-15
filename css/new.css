@@ -126,6 +126,11 @@ html {
     background-image: url('/assets/pplstar.gif');
 }
 
+.my-button {
+    padding: 5px;
+    gap: 5px;
+}
+
 .cass {
     border: 2px solid pink;
     height: 250px;
