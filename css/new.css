@@ -13,6 +13,11 @@ html {
     cursor: url('../assets/cursor.cur'), auto !important;
 }
 
+.pgp {
+    font-size: 18px;
+    font-family: silly_guy;
+}
+
 .container {
     width: 100vw;
     display: flex;
