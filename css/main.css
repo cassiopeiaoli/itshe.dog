@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    background-color: #101015;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.zoi {
+    width: 250px;
+    margin-bottom: 10px;
+}
+
+.wise-words {
+    text-align: center;
+    font-weight: 700;
+    color: rgb(206, 206, 206);
+    line-height: 40px;
+    font-size: 1.5rem;
+}
+
+.navigation {
+    position: absolute;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    left: 0px;
+}
+
+li {
+    display: inline;
+    padding: 0 15px;
+}
+
+li a {
+    color: white;
+}
+
+li a:hover {
+    color: rgb(202, 67, 202);
+}
+
+.footer {
+    position: absolute;
+    width: 100vw;
+    text-align: center;
+    background-color: #23232f;
+    color: white;
+    padding: 15px;
+    bottom: 0;
+}
+
+.strike::after {
+    content: "good";
+    color: rgb(75, 75, 75);
+    font-size: 8px;
+}
