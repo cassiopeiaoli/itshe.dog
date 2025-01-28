@@ -63,7 +63,8 @@ body {
 }
 
 .container {
-    width: 50%;
+    width: 70%;
+
     padding: 10px;
     background-color: rgb(46, 18, 46);
 }
@@ -134,6 +135,30 @@ th, td {
 
 a:hover {
     color: rgb(194, 129, 255) !important;
+}
+
+/* ARTICLE STUFF */
+.date {
+    font-size: 12px;
+    color: rgb(157, 157, 157);
+}
+
+.article {
+    padding: 0 15px;
+}
+
+.text {
+    margin-top: 30px;
+}
+
+.text p {
+    margin-top: 10px;
+    text-align: justify;
+}
+
+.article-image {
+    margin-top: 10px;
+    width: 100% !important;
 }
 
 @media only screen and (max-width: 700px) {

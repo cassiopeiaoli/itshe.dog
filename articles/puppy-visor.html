@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="description" content="
+        born to whimper
+        world is a bark
+        chew them all 1989
+        im bad dog
+        410,757,864,530 loud whines">
+    <title>itshe.dog | My Puppy Visor Project!</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <div class="logo">
+                <a href="../index.html">
+                    cassiopeia's borzoi enclosure
+                </a>
+            </div>
+            
+            <div class="links">
+                <ul>
+                    <li>
+                        <a href="../blog.html">blog</a>
+                    </li>
+                    <li>
+                        <a href="../cassiopedia.html">cassiopedia</a>
+                    </li>
+                    <li>
+                        <a href="../contact.html">contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="main">
+            <article class="article">
+                <h2>Puppy visor part one: WS2812b LEDs on STM32F411</h2>
+                <span class="date">2025-01-26</span>
+                <div class="text">
+                    <p>Hi!!</p>
+                    <p>
+                        It wanted to talk about a project It's currently working on: a visor! You probably know what
+protogens are - you can think of this project as of something similar to a protogen, 
+but way simpler (it thinks?)!
+                    </p>
+                    <p>It wants a puppy muzzle with electronics installed in it which include:</p>
+                    <br>
+                    <ul>
+                        <li>two 8x8 WS2812b LED matrixes for the eyes</li>
+                        <li>a MPU6050 Gyroscope and Accelerometer </li>
+                        <li>A touch button</li>
+                        <li>one 4x4 WS2812b LED matrix for the mouth</li>
+                    </ul>
+                    <br>
+                    <p>
+                        It actually already built a working prototype (at least the electronics)! And one of the
+thingies that was MOST difficult to interface with were the WS2812b matrixes! For the
+prototype, this one used a library it found on github, but it proved to be very, very
+troublesome to work with on a bigger scale.
+                    </p>
+                    <p>
+                        What it wants is:
+                    </p>
+                    <br>
+                    <ul>
+                        <li>being able to refresh the framebuffer for the matrix</li>
+                        <li>clear the matrix</li>
+                        <li>display animations on the matrix</li>
+                    </ul>
+                    <p>
+                        While the aforementioned library worked, interfacing it with puppy's code was extremely difficult and produced
+very nasty code with many, many hacks. Since this one wants the visor to be puppy's first <b>BIG</b> project, it wants the code
+to be as clean as possible, no place for dirty hacks!
+                    </p>
+                    <p>
+                        Another issue was that this library was the only piece of code it has not written itself, which it felt bad about. It always
+wants to understand every piece of equipment it uses, and since STM32F411 is this one's first bigger MCU it wants to <b>learn,</b> and
+it's not going to learn if it uses libraries for stuff!
+
+                    </p><br>
+                    <h3>
+                        WS2812b LEDs
+                    </h3>
+                    <p>
+                        !!!
+                    </p>
+                    <p>
+                        Lets finally talk about the main topic of this article - the WS2812b LEDs :3
+                    </p>
+                    <img class="article-image" src="img/ws2812btiming1.png" alt="Timing diagrams for sending logical ones and zeroes to WS2812b LEDs">
+                    <img class="article-image" src="img/ws2812b.png" alt="Timing diagrams for sending logical ones and zeroes to WS2812b LEDs">
+                    <p>
+                        Those are timing diagrams for the WS2812b LED. Each LED takes <b>24 bits</b> of data, and each bit is a signal that lasts <b>1.25us</b>
+                    </p>
+                    <p>
+                        For example, if we want to send a <b>logical zero</b>, we want to keep the signal high for <b>0.4us</b> and low for <b>0.85us</b>
+                    </p>
+                    <p>
+                        And if we want to send a <b>logical one</b>, we want to keep the signal high for <b>0.8us</b> and low for <b>0.45us</b>
+                    </p>
+                    <p>
+                        After each 24 bits we need to send a low signal for <b>at least</b> 50us, it's very important!! If we don't send this signal after each
+                        24 bits (or the signal we send is too short) it can confuse the WS2812b and produce <b><i>MIND BOGGLING EFFECTS</i></b> 
+                    </p>
+                    <p>
+                        WS2812b after you send it incorrect reset signal:
+                    </p>
+                    <img  src="../assets/img/borzoigaming-borzoi1.gif" alt="">
+                    <br>
+                    <p>
+                        As you can see, each LED has a <b>DIN</b> and <b>DOUT</b> pin, they're all connected to each other! This allows us to use only <b>one wire</b> to drive
+                        those LEDs, quite neat!!!!!!!
+                    </p>
+                    <p>
+                        To create such specific signals we'll have to use <b>Pulse Width Modulation</b>, and we will throw <b>DMA</b> in here for good measure as to not block the MCU :3
+                    </p><br>
+                    <h3>Timer configuration!</h3>
+                    <p>Here it will configure TIM1 for PWM and DMA :3</p>
+                    <p>One important info: Puppy's STM32F411 runs on external oscillator built into its blackpill (25MHz). Given you use a different
+                        oscillator or a different clock speed, you'll have to use different values for <b>counter period</b> and other values in order 
+                        to send correct signals to WS2812b!!!
+                    </p>
+                    <img src="img/tim1.png" alt="" class="article-image">
+                    <p>
+                        And that's literally it when it comes to timer configuration :3 Now lets look at DMA!
+                    </p>
+                    <img src="img/dmaled.png" alt="" class="article-image">
+                    <p>
+                        We <b>must remember</b> to set direction as <b>Memory to Peripheral</b> since we're sending data from our MCU to the matrix :3
+                        We also use <b>normal mode</b> and data width of <b>half-word.</b>
+                    </p>
+                    <p>And... That's actually it when it comes to configuration! Lets write some code already :3c</p>
+                    <br>
+                    <h2>Code!!!! We're writing code!!!!!!!!</h2>
+                    <p>
+                        Do keep in mind that this is a very <b>general way</b> of interfacing with WS2812b! You'll probably have to introduce interrupts
+                        for transfer completion to be able to do more complex things ^^
+                    </p>
+                    <p>
+                        Lets start by defining our framebuffer :3c
+                    </p>
+                    <img src="./img/code.png" class="article-image" alt="">
+<p>
+    Your immediate question might be: why is FRAMEBUFFER an array of 3-length arrays? If we look back into the WS2812b datasheet, we can see this:
+</p>
+<img class="article-image" src="./img/datastuff.png" alt="">
+<p>
+    As we can see, those 24 bits are composed of three parts for <b>green, red and blue!</b> All of those are made of 8 bits, and our framebuffer
+    just holds data for those different colours, for each LED! Also <b>remember</b> that WS2812b accepts this data from MSB -> LSB!!
+</p>
+                </div>
+            <p>
+                abababababab!!!! Time to write functions!!
+                             
+            </p>
+            <img src="./img/code1.png" class="article-image" alt="">
+            <p>
+                Rebarkable,,, truly! This is a function we're going to use to set individual LEDs within our matrix :3c
+            </p>
+            <p>Lets try sending data to the matrix now!</p>
+            <img src="./img/code2.png" alt="" class="article-image">
+<br>
+            <p>
+                What happens here:
+            </p>
+            <ol>
+                <li>We go over all LEDs</li>
+                <li>For each LED, we go in a loop backwards (remember how WS2812b accepts data!)</li>
+                <li>if a bit in a color variable is set, we send a high pulse, otherwise we send a low pulse</li>
+                <li>After that, we send fifty 1.25us pulses (this gives us 62,5us for reset signal :3)</li>
+                <li>We start the DMA transfer :3c</li>
+            </ol>
+            <br>
+            <h2>...!!!!!!!!!!!!!!!!!!</h2>
+            <p>Lets visit our <b>main</b> function and add this:</p>
+            <img src="./img/code3.png" class="article-image" alt="">
+            <br>
+            <p>AND</p><br>
+            <img src="./img/ledsworking.jpg" class="article-image" alt="">
+            <br>
+            <p style="font-size: 32px">
+                <b>IT HECKING WORKS!!!!</b>
+            </p>
+            </article>
+        </div>
+    </div>
+
+</body>
+</html>
