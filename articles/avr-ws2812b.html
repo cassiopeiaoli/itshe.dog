@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="description" content="
+        born to whimper
+        world is a bark
+        chew them all 1989
+        im bad dog
+        410,757,864,530 loud whines">
+    <title>itshe.dog | Driving WS2812b through AVR MCU (ATTiny85)</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <div class="logo">
+                <a href="../index.html">
+                    cassiopeia's borzoi enclosure
+                </a>
+            </div>
+            
+            <div class="links">
+                <ul>
+                    <li>
+                        <a href="../blog.html">blog</a>
+                    </li>
+                    <li>
+                        <a href="../cassiopedia.html">cassiopedia</a>
+                    </li>
+                    <li>
+                        <a href="../contact.html">contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="main">
+            <article class="article">
+                <h2>Driving WS2812b using AVR microcontrollers (ATTiny85)</h2><br>
+                <img src="../assets/img/borzoigaming-borzoi1.gif" style="width: 60%" alt="">
+                <div class="date">2025-02-03</div>
+                <div class="text">
+                    Hello!! :happy:
+                    <p>
+                        In my previous article I showed you how to drive WS2812b LEDs using STM32 with usage of PWM and DMA. I have to own up to my mistake and say that I've made many mistakes 
+                        in that article, both in terms of explanation and the code I provided. I want to apologize for that, I wrote that article very early in the morning and uploaded it without
+                        really double checking it, hope ya understand.. :hmm:
+                    </p><br>
+                    <p>
+                        Today I come to you with something I've been banging my head against for quite some time, and that is using an AVR microcontroller to drive WS2812b LEDs. In my case I'm talking about
+                        ATTiny85, my personal favourite.
+                    </p>
+                    <p>
+                        I <b><i>love</i></b> STM32, it's  a wonderful microcontroller with thousands of possibilities and functionalities, but it always seemed like a bit of an overkill for just driving some LEDs and
+                        doing simple I2C and ADC, I started my MCU journey with ATTiny85, and used it for every project so far. And I <i>really</i> wanted to use it for the visor project too, but I ran into a wall with ATTiny85, that I didn't quite
+                        know how to pass - driving WS2812b LEDs.
+                    </p>
+                    <p>
+                        You see, ATTiny85 turned out to be just... Way too slow for that! :hmm: :hmm: :hmm:
+                    </p>
+                    <p>
+                        Most AVR MCUs can work up to 20MHz (with an external oscillator!), and a single PWM period is just... Too long to be able to send signals for WS2812b! I knew there were
+                        Arduino/AVR libraries available for ATTiny85, but I had some issues with using those:
+                    </p>
+                    <br>
+                    <ol>
+                        <li>Libraries can take a LOT of space, we already don't have much flash or RAM on ATTiny85!</li>
+                        <li>I don't want to f*ck around with including external code into mine.</li>
+                        <li>My ATTiny85 shall be blessed only with my code :happy: (bad code)</li>
+                    </ol>
+                    <br>
+                    <p>
+                        As I said in my previous article - I'm not a fan of using libraries, especially when we are so limited when it comes to space on our MCU! 
+                    </p>
+                    <p>
+                        There's also another reason for that - I want to be regarded as <i>The AVR Witch</i>, and how can I be called that if I can't use ATTiny85 for such a simple project?
+                    </p>
+                    <p>
+                        Let's dive into WS2812b timings.... again!!
+                    </p><br>
+                    <h3>WS2812b isn't <i>that</i> scary!</h3>
+                    <img class="article-image" src="./img/ws2812btiming1.png" alt="">
+                    <p>
+                        Let's go through those timings again, to send a <i>0 code</i> to WS2812b we have to:
+                    </p><br>
+                    <ol>
+                        <li>Keep signal <i>HIGH</i> for 0.35 to 0.55us!</li>
+                        <li>Keep signal <i>LOW</i> for 0.7 to 1.0us!</li>
+                    </ol>
+                    <br>
+                    <p>And to send a <i>1 code</i> we have to:</p>
+                    <br>
+                    <ol>
+                        <li>Keep signal <i>HIGH</i> for 0.65 to 0.95us!</li>
+                        <li>Keep signal <i>LOW</i> for 0.3 to 0.6us!</li>
+                    </ol>
+                    <p>
+                        As you can see, I took into account the small leeway of 150ns for each signal that WS2812b gives us! Another important thing is that we have no upper limit for the RESET/LATCH signal!
+                    </p>
+                    <p>With those timings, it seems we are a little bit <i>less constrained</i> but it doesn't help us much, at least that's how it seems for now!</p>
+                    <p><i>"But Cassiopeia, ATTiny85's PWM is still too slow for us to send such signals!"</i></p>
+                    <br><br>
+
+                    <p>Who said we <i>have</i> to use PWM?</p>
+                    <br>
+                    <h3>AVR Assembly (ten gazillion <i>nop</i> instructions)</h3>
+                    <img src="../assets/img/borzoigaming-borzoi.gif" style="width: 50%" alt="">                 
+                    <p>
+                        Don't be scared, we won't be doing any complex AVR Assembly here, in fact we will be doing <b>nothing (through AVR Assembly)!</b>
+                    </p>
+                    <p>
+                        As I stated before - we won't be using PWM here at all! We will be <b>manually keeping a pin high/low for certain amount of time</b> to send appropriate WS2812b signals!
+                    </p>
+                    <p>
+                        I still remember trying to use delay functions to create those artificial timings between signals, and of course that didn't work, those functions are just... Too slow! :hmm:
+                    </p>
+                    <p>
+                        One way to achieve such delays is to just tell the MCU to... :happy: do <b style="font-size: 24px">   NOTHING</b>
+                        And the best way to do so is to use AVR Assembly's <b>nop</b> instruction!
+                    </p>
+                    <p>
+                        NOP is an instruction that does literally nothing, but it <b>does</b> a VERY important thing for us - it creates a very, very short <b>delay.</b> I would be lying if I said
+                        I took my time to calculate precisely how much time a single <b>nop</b> will use on my 16MHz ATTiny85. I literally just threw those nops at the code and looked at my oscilloscope
+                        to see how many I should use :happy: :happy: :happy:
+                    </p>
+                    <p>
+                        Here's an example of my code :3
+                    </p>
+                    <img src="./img/avrws.png" class="article-image" alt="">
+                    <p>
+                        As you can see, I simply set the port (in my case its PORTB0) high and then execute a certain amount of inline assembly NOPs to keep the signal high for a given amount of time! :happy: 
+                    </p>
+                    <p>
+                        The <b>Reset</b> signal is handled very poorly here, since it doesn't really have an upper bound, I decided to simply use a delay function, I'll surely replace it with a proper delay <i>later</i> :3
+                    </p>
+                    <p>Let's try sending some data! Blue is a nice colour, so let's make our LED Matrix shine blue!</p>
+                    <img src="./img/avrws2.png" class="article-image" alt="">
+                    <p>
+                        As you can see, the for loop in <b>send_color_data</b> function goes in reverse, that's because WS2812b accepts data MOST SIGNIFICANT BIT first, so we have send data "in-reverse" :hmm:
+                        Keep in mind that I don't actually use this function in this example, but just wanted to put it here to remind you of how WS2812b accept data :happy:
+                    </p>
+                    <p>
+                        In our <b>main</b> function we set PORTB0 as output by writing to the <b>DDRB</b> register. In a for loop we go over 64 LEDs, and since each LED is built from 24 bits of data, we go over those 24 bits.
+                        And when we reach the last bit (Also!! WS2812b use "GRB" color order!), we send a one, otherwise we keep sending zeroes.
+                    </p>
+                    <p>After we are done with all of our data, we simply send the reset/latch signal. :3</p>
+                    <br>
+                    <h3>
+                        :happy:!!
+                    </h3>
+                    <br>
+                    <p>
+                        Sorry for this lod-quality photo, it's REALLY late here, but you can see that our LEDs are blue!!! And simply by <s>rawdogging</s> bitbanging our data and holding it high or 
+                        low for required amounts of time!
+                    </p>
+                    <img src="./img/workingleds.jpg" class="article-image" alt="">
+                
+                    <p>
+                        The code I showcased here is not perfect, there are a lot of factors that determine the length of our signals, I'll surely try to move the entire setting pin high/low fully to assembly, with a cool loop or whatnot :3
+                    </p>
+                    <p>
+                        And that's the end of this blog post :3 
+                    </p>
+                    <p>
+                        Thank you for reading!!!!!!!!! See ya next time! I'm planning on releasing a simple .h library for AVR MCUs, we will see how far I'll go in that -w-
+                    </p>
+                    <br>
+                    <img src="../assets/img/zoimain.png" alt="">
+                </div>
+                   
+            </article>
+        </div>
+    </div>
+
+    <script src="../js/borzmoji.js"></script>
+</body>
+</html>

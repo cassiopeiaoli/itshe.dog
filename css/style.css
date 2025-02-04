@@ -47,6 +47,17 @@ body {
     margin: 0 15px;
 }
 
+.emoji {
+    width: 30px !important;
+    margin: 0 !important;
+    margin-left: 5px !important;
+    padding: 0 !important;
+}
+
+h3 .emoji {
+    width: 100px !important;
+}
+
 .links ul {
     padding: 0;
 }
