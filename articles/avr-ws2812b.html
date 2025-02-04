@@ -171,6 +171,37 @@
                     </p>
                     <br>
                     <img src="../assets/img/zoimain.png" alt="">
+
+                    <br>
+                    <h3>UPDATE!! IMPORTANT</h3>
+                    <br>
+                    <img src="../assets/img/borzoigaming-borzoi-yap.gif" style="width: 50%" alt="">
+                    <p>
+                        There's one important thing I actually forgot to mention. The low data period between bits can be up to 49.9us long! We just cannot reach the 50us low latch/reset signal!
+                    </p>
+                    <p>Take a look at this here piece of updated code!</p>
+                    <img src="./img/blogupdate.png" class="article-image" alt="">
+                    <p>
+                        I decided to fully switch to inline assembly code, here's a quick explanation:
+                    </p>
+                    <p>
+                        <b>sbi 0x18, 0</b>: sets 0 bit at 0x18. <i>0x18</i> is the address of the PORTB register. Setting 0 bit of PORTB will set PB0 pin on my ATTiny85 high!
+                    </p>
+                    <p>
+                        <b>.rept 10</b>: repeats the next instruction(s) 10 times
+                    </p>
+                    <p>
+                        <b>.endr</b>: ends the repeat
+                    </p>
+                    <p>
+                        <b>cbi 0x18, 0</b>: same as with <b>sbi</b>, but clears the bit instead!
+                    </p>
+                    <p>
+                        This is my first time actually using inline assembly in C code, it was pretty fun, especially since I really like writing RAW AVR Assembly :happy:
+                    </p>
+                    <p>
+                        I think that's everything, see ya next time!
+                    </p>
                 </div>
                    
             </article>
