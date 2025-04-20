@@ -10,3 +10,9 @@
 .article * {
 	font-family: "Noto Serif", serif;
 }
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: justify;
+}
