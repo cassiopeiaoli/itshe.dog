@@ -1,0 +1,12 @@
+@font-face {
+	font-family: terminus;
+	src: url('../terminus.ttf');
+}
+
+* {
+	font-family: terminus;
+}
+
+.article * {
+	font-family: "Noto Serif", serif;
+}
