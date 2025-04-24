@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+		<head>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+				<link rel="stylesheet" href="../css/global.css">
+				<meta charset="utf-8">
+				<title>itshe.dog | 6502 Mask/Visor/Protogen</title>
+		</head>
+		<body class="bg-slate-950 flex items-center justify-center">
+				<div class="container borzoi w-2xl mt-8 shadow-2xl" style="background: linear-gradient(180deg, rgb(89, 19, 84) 35%, rgb(54, 6, 55) 100% );">
+						<header class="w-full text-2xl p-4 flex items-center justify-between bg-violet-600">
+								<h1 class="font-semibold text-white sm:text-sm text-xl">
+										Itchydog's Borzoi Enclosure
+								</h1>
+								<div class="links text-sm">
+										<a class="text-gray-300 mr-4 hover:text-pink-300" href="../index.html">home</a>
+										<a class="text-gray-300 mr-4 hover:text-pink-300" href="../blog.html">blog</a>
+										<a class="text-gray-300 hover:text-pink-300" href="../about.html">about</a>
+								</div>
+						</header>
+						<div class="p-4 text-white article">
+                <img src="https://media1.tenor.com/m/0QD2fZZ670gAAAAC/borzoigaming-borzoi.gif"/>
+                <h2 class="text-2xl mt-4 font-bold">Creating a Visor/Mask/Protogen display using MOS6502</h2>
+                <p>2025-04-24</p>
+                <hr class="mt-2 opacity-20"/>
+                <p class="mt-4">
+                  Hi!! :3
+                </p>
+                <p class="mt-4">
+                  This one's current project is rather simple and complex at the same time, it is a very very simple display based on WS2812b LEDs.
+                </p>
+                <p class="mt-4">
+                  We have a ton of very capable microcontrollers nowadays that make driving WS2812b slightly less difficult (especially when we take libraries into account). But I really didn't want to use a typical microcontroller! Most people (and not people) with such displays often use Arduino boards to achieve the desired effect and that's really really cool! I just personally do not like Arduino and I prefer to do things *my way*.
+                </p>
+                <p class="mt-4">
+                  I went through different microcontrollers I know how to use very well:
+                </p>
+                <ul class="pl-8 list-disc">
+                     <li>ATTiny85</li>
+                     <li>ATTiny2313a</li>
+                     <li>CH32V003</li>
+                     <li>STM32F411</li>
+                     <li>ATMega16</li>
+                </ul>
+                <p class="mt-4">
+                  And all of these are <i>wonderful</i> options. AVR requires bitbanging in assembly to drive WS2812b but that's not a problem since I did that countless times. I can even use PWM in CH32V003 and STM32, but all of those options seemed <b>too easy</b>.
+                </p>
+                <p class="mt-4">
+                  And that's where the <s>FUCKING</s> MOS6502 enters the scene! I have always been a fan of 6502, it was my first contact with assembly back when I made games for Atari2600 and Nintendo Entertainment System!
+                </p>
+                <p class="mt-4">
+                  And around six months ago I got into electronics, and I do have three MOS6502s from 1980' in my paws, so I decided to go with the most STUPID of ideas - to drive WS2812b LEDs using MOS6502!
+                </p>
+                <p class="mt-4">
+                  But if you know WS2812b signals and you know about 6502's clock speeds your immediate response to that should be "But wait! This is impossible! 6502 is just TOO slow to drive WS2812b!"
+                </p>
+                <p class="mt-4">
+                  To that I say: <b><i><u>YES, YOU ARE ABSOLUTELY CORRECT! IT IS IMPOSSIBLE TO DRIVE WS2812b LEDs USING MOS6502</u></i></b>
+                </p>
+                <p class="mt-4">
+BUT! It's not over yet, there are THINGS we can do to make that (hopefully?) possible!
+                </p>
+                <h3 class="text-xl mt-4 font-bold">WHAT?!</h3>
+                <p class="mt-4">
+              To those unaware, MOS6502 can function <i>properly</i> up to 2MHz. That, according to its datasheet gives us 500 nanoseconds per clock cycle, which isn't half bad until we realize that the main thing I wanted to use to create time delays (nop instruction) takes... Two clock cycles to execute.                </p>
+                <p class="mt-4"> 
+              And WS2812b requires signals of width of 450 nanoseconds and 850 nanoseconds to drive them, so we are literally <s>fucked</s>.
+                </p>
+                <p class="mt-4">
+Luckily there are some options that will allow us to drive WS2812b while still using 6502!
+                </p>
+        <ul class="pl-8 list-disc mt-2">
+<li>Create a second circuit that will accept data from 6502 and send it to WS2812b with proper timings (kinda boring, since then it's not the MPU sending data)</li>
+<li>Use W65C02S, a modern replacement for MOS6502 that can run up to 14MHz!</li>
+<li>There was a third option but I completely forgot what it was while writing this post! God bless puppy brain!</li>
+        </ul>
+            <p class="mt-4">
+The best possible way to do it is to pick W65C02S, which doesn't really feel good but I know that no matter what it wouldn't be possible with original MOS6502..
+            </p>
+<p class="mt-4">And sadly I can't really check it right now! I do have a MOS6502 in my breadboard, but I do not have an EEPROM to store code or RAM to handle stack and memory. Luckily, my birthday is getting very close, and my work pay is in a few days so I am going to order oscillators, w65c02s, RAM and EEPROM chips and a chip programmer!</p>
+<p class="mt-4">
+  I'll try to update as soon as I can, I am very very very excited for this project :3 Have a good day everyone!
+</p>
+</div>
+<footer class="p-4 text-white bg-violet-900 text-center flex justify-center items-center flex-col mt-4 text-xs">
+							<p>fuck copyright (itchydog's website :3)</p>
+						</footer>
+				</div>
+		</body>
+</html>
