@@ -1,0 +1,13 @@
+@font-face {
+    font-family: terminus;
+    src: url('../terminus.ttf');
+}
+
+.background-text {
+    font-family: terminus;
+    color: rgba(95, 95, 95, 0.1);
+}
+
+.container {
+    font-family: terminus;
+}
