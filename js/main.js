@@ -149,8 +149,14 @@ I let myself go.
 But what do I know?
 Now you have to go.
 `,
+`
+The MOS Technology 6502 (typically pronounced "sixty-five-oh-two" or "six-five-oh-two")[3] is an 8-bit microprocessor that was designed by a small team led by Chuck Peddle for MOS Technology. The design team had formerly worked at Motorola on the Motorola 6800 project; the 6502 is essentially a simplified, less expensive and faster version of that design.
+`,
+`
+No More Worlds Like This, No More Days Like That
+`,
 ]
-const check = 100;
+const check = 120;
 
 class BackgroundAnimation {
     
@@ -174,8 +180,8 @@ class BackgroundAnimation {
             this.iterations = 0;
             this.background.textContent = this.convertedTexts[Math.floor(Math.random() * this.convertedTexts.length)];
         }
-        window.requestAnimationFrame(() => this.render());
         this.iterations++;
+        window.requestAnimationFrame(() => this.render());
     }
 }
 
