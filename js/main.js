@@ -173,6 +173,16 @@ class BackgroundAnimation {
             }
         });
         this.background.textContent = this.convertedTexts[0]; 
+        this.convertedTexts = this.convertedTexts.map(text => text.trimEnd());
+        this.convertedTexts = this.convertedTexts.map(text => {
+            const tmpText = text.split(' ').map(n => {
+                if (n.length == 3) {
+                    return n += '0';
+                }
+                return n;
+            });
+            return tmpText.join(' ');
+        });
     }
 
     render() {
