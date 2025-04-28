@@ -18,7 +18,7 @@
 <p>
 </p>
 		<div class="posts mt-8 overflow-y-auto">
-			               
+			|!paw posts.html !|
 		</div>
         </div>
         <script src="../js/main.js"></script>

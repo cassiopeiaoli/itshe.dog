@@ -5,20 +5,20 @@
 				<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 				<meta charset="utf-8">
                 <link rel="stylesheet" href="../css/style.css">
-				<title>itshe.dog | Lyra</title>
+				<title>itshe.dog | ara</title>
 		</head>
 		<body class="bg-black p-4 overflow-hidden">
         <div class="background absolute overflow-hidden top-0 z-0">
             <p class="background-text sm:text-xs md:text-xl text-justify w-full select-none"></p>
         </div>
         <div class="container text-white text-md relative z-1">
-            <h1 class="text-2xl itchydog">Lyra's interface</h1>
+            <h1 class="text-2xl itchydog">ara's doll diary</h1>
             <p class="mt-4">
 </p>
 <p>
 </p>
 		<div class="posts mt-8 overflow-y-auto">
-			               
+			|!paw posts.html !|
 		</div>
         </div>
         <script src="../js/main.js"></script>
