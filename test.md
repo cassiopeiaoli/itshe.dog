@@ -1,7 +1,0 @@
-# TEST
-
-## SKIBIDI
-
-uwu
-
-*ababaabbabaababbaaba*
