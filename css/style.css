@@ -70,3 +70,13 @@ article h3 {
 	font-size: 1.2rem;
 	font-style: italic;
 }
+
+article h2 {
+	font-size: 1.3rem;
+	font-style: italic;
+}
+
+article p {
+	margin-top: 10px;
+	width: 80%;
+}
