@@ -1,0 +1,29 @@
+BROKEN VESSEL - Hello and welcome!
+
+Welcome! This is my new website and a first blog post to kick things off!
+
+!content
+
+# Hello and welcome!
+2025-05-14
+
+![image](../img/ahhblog.jpg)
+
+welcome! it's been working on this website for quite some time, it really is difficult to satisfy this one but it's pretty happy with how this turned out! many things have changed for the better, this website now uses *ZERO* JavaScript! it actually is built using this one's *custom* Static Site Generator called **PAW!**
+
+## PAW! ,, PAW? What is PAW?!
+
+*PAW!* is this one's first *rust* project! doggy tried learning rust a **long time ago** but it was just unable to! recently it got ADHD meds that finally allowed it to focus enough to sit down and learn rust a little!
+
+this one always believed that the best way to learn a thing is to make something for someone or yourself!
+
+and this one's most recent struggle was this website! it knew it could use an already existing static site generator, but it just didn't want to! [*this one's shitty programming will only be supported by even shittier tooling programmed by this one!*]
+
+and that's how **PAW!** came to be! it is an *extremely simple* static site generator that works using special **.bark** template files (which is basically markdown with some stupid custom shit!!)
+
+so now puppy is able to create blog posts *SUPER EASILY*!!!!!!! then it has to simply run "paw" from its command line and *BOOM* the website is ready ^^
+
+## What now?
+
+NO IDEA!!!!!!!!!!!!!!!!!!
+This post is generally a huge test of *PAW!* and a silly little welcome! ^^

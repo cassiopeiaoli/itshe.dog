@@ -1,86 +1,39 @@
-body {
-	background-color: red;
-}
-
-pre {
-	white-space: pre;
-	font-family: 'Roboto', sans-serif;
-	font-size: 12px;
-	z-index: 1;
-	color: magenta;
-	text-shadow: 1px 1px 5px rgba(155, 255, 0, 0.5);
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	opacity: 0.2;
-}
-
 @font-face {
     font-family: terminus;
     src: url('../terminus.ttf');
 }
 
-.background-text {
-    font-family: monospace;
-    text-align: justify;
-    color: rgba(25, 25, 25, 0.5);
-    animation: bckg-glow 4.0s infinite alternate;
+* {
+	font-family: 'terminus', monospace;
+	color: #EEE;
 }
 
-@keyframes bckg-glow {
-    from {
-        text-shadow: 1px 1px -7px rgba(255, 255, 255, 0.1);
-        opacity: 60%;
-    }
-    to {
-        text-shadow: 1px 1px 7px rgba(255, 255, 255, 0.1);
-        opacity: 80%;
-    }
+body {
+	padding: 10px;
+	background-color: #050515;
 }
 
-.container {
-    font-family: terminus;
+pre {
+	font-family: 'Roboto', sans-serif;
+	font-size: 4px;
 }
 
-.container a {
-    transition: text-shadow 0.2s;
+h1 {
+background: -webkit-linear-gradient(180deg,rgba(91, 206, 250, 1) 0%, rgba(245, 169, 184, 1) 25%, rgba(255, 255, 255, 1) 50%, rgba(245, 169, 184, 1) 75%, rgba(91, 206, 250, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.container a:hover {
-    text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.5);
-    color: pink;
+img {
+	width: 15%;
 }
 
-.paw {
-    color: white;
+p {
+	text-align: justify;
 }
 
-.itchydog {
-    animation: glow 0.9s infinite alternate; 
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 1px 1px -7px rgba(255, 255, 255, 1);
-    }
-    to {
-        text-shadow: 1px 1px 7px rgba(255, 255, 255, 1);
-    }
-}
-
-/* ARTICLE STUFF */
-article h3 {
-	font-size: 1.2rem;
-	font-style: italic;
-}
-
-article h2 {
-	font-size: 1.3rem;
-	font-style: italic;
-}
-
-article p {
-	margin-top: 10px;
-	width: 80%;
+@media screen and (min-width: 500px) {
+	p {
+		width: 70%;
+	}
 }
