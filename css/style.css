@@ -1,3 +1,7 @@
+body {
+	background-color: red;
+}
+
 pre {
 	white-space: pre;
 	font-family: 'Roboto', sans-serif;
